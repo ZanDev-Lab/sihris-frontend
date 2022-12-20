@@ -9,11 +9,21 @@
       <form class="w-full card">
         <div class="form-group">
           <label for="" class="text-grey">Complete Name</label>
-          <input type="text" class="input-field" />
+          <input
+            type="text"
+            class="input-field"
+            :value="name"
+            @input="updateName"
+          />
         </div>
         <div class="form-group">
           <label for="" class="text-grey">Email Address</label>
-          <input type="email" class="input-field" />
+          <input
+            type="email"
+            class="input-field"
+            :value="email"
+            @input="updateEmail"
+          />
         </div>
         <div class="form-group">
           <label for="" class="text-grey">Gender</label>
@@ -21,21 +31,28 @@
             name=""
             id=""
             class="appearance-none input-field form-icon-chevron_down"
+            :value="gender"
+            @change="updateGender"
           >
-            <option value="" selected>Male</option>
-            <option value="">Female</option>
+            <option value="MALE" selected>Male</option>
+            <option value="FEMALE">Female</option>
           </select>
         </div>
         <div class="form-group">
           <label for="" class="text-grey">Age</label>
-          <input type="number" class="input-field" />
+          <input
+            type="number"
+            class="input-field"
+            :value="age"
+            @input="updateAge"
+          />
         </div>
-        <a
-          href="employee_create-2.html"
+        <nuxt-link
+          :to="{ name: 'companies-id-employees-finish' }"
           class="w-full btn btn-primary mt-[14px]"
         >
           Continue
-        </a>
+        </nuxt-link>
       </form>
     </section>
   </div>
@@ -44,5 +61,39 @@
 export default {
   layout: "form",
   middleware: "auth",
+  computed: {
+    name() {
+      return this.$store.state.employee.name;
+    },
+    email() {
+      return this.$store.state.employee.email;
+    },
+    gender() {
+      return this.$store.state.employee.gender;
+    },
+    age() {
+      return this.$store.state.employee.age;
+    },
+  },
+  methods: {
+    updateName(event) {
+      this.$store.commit("employee/updateName", event.target.value);
+    },
+    updateEmail(event) {
+      this.$store.commit("employee/updateEmail", event.target.value);
+    },
+    updateGender(event) {
+      this.$store.commit("employee/updateGender", event.target.value);
+    },
+    updateAge(event) {
+      this.$store.commit("employee/updateAge", event.target.value);
+    },
+    team_id(event) {
+      this.$store.commit("employee/team_id", event.target.value);
+    },
+    role_id(event) {
+      this.$store.commit("employee/role_id", event.target.value);
+    },
+  },
 };
 </script>

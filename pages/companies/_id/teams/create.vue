@@ -6,7 +6,7 @@
         Team that can bring your company <br />
         growing bigger and bigger
       </p>
-      <form class="w-full card">
+      <form @submit.prevent="createTeam" class="w-full card">
         <div class="mb-[2px] mx-auto">
           <img src="/assets/svgs/ric-box.svg" alt="" />
         </div>
@@ -15,13 +15,18 @@
           <input
             type="email"
             class="input-field disabled:bg-grey disabled:outline-none"
-            value="angga@yourcompany.com"
+            :value="this.$auth.user.email"
             disabled
           />
         </div>
         <div class="form-group">
           <label for="" class="text-grey">Team Name</label>
-          <input type="text" class="input-field" value="Growth Marketing" />
+          <input
+            type="text"
+            class="input-field"
+            value="Growth Marketing"
+            v-model="team.name"
+          />
         </div>
         <div class="form-group">
           <label for="" class="text-grey">Status</label>
@@ -34,9 +39,9 @@
             <option value="">Inactive</option>
           </select>
         </div>
-        <a href="my_teams.html" class="w-full btn btn-primary mt-[14px]">
+        <button type="submit" class="w-full btn btn-primary mt-[14px]">
           Continue
-        </a>
+        </button>
       </form>
     </section>
   </div>
@@ -45,5 +50,29 @@
 export default {
   layout: "form",
   middleware: "auth",
+  data() {
+    return {
+      team: {
+        name: "",
+        company_id: this.$route.params.id,
+      },
+    };
+  },
+  methods: {
+    async createTeam() {
+      try {
+        //Send Registration Data to Server
+        let response = await this.$axios.post("/team", this.team);
+
+        // Redirect to My Team Page
+        this.$router.push({
+          name: "companies-id-teams",
+        });
+        console.log(response);
+      } catch (error) {
+        console.log(error);
+      }
+    },
+  },
 };
 </script>
